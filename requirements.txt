@@ -1,0 +1,37 @@
+# Core Deep Learning
+torch>=2.0.0
+torchvision>=0.15.0
+transformers>=4.30.0
+
+# Data Processing
+numpy>=1.24.0
+pandas>=2.0.0
+Pillow>=9.5.0
+opencv-python>=4.7.0
+
+# NLP and Tokenization
+nltk>=3.8.0
+spacy>=3.5.0
+
+# Evaluation Metrics
+pycocoevalcap @ git+https://github.com/jmhessel/pycocoevalcap.git
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.14.0
+gradio>=3.35.0
+
+# Progress and Logging
+tqdm>=4.65.0
+tensorboard>=2.13.0
+wandb>=0.15.0
+
+# Utilities
+pyyaml>=6.0
+scikit-learn>=1.2.0
+scipy>=1.10.0
+
+# Optional: For LLM refinement
+openai>=1.0.0
+
