@@ -329,7 +329,7 @@ if __name__ == "__main__":
         'num_epochs': 20,
         'grad_clip': 5.0,
         'early_stopping_patience': 5,
-        'device': 'cuda' if torch.cuda.is_available() else 'cpu'
+        'device': 'mps' if torch.backends.mps.is_available() else ('cuda' if torch.cuda.is_available() else 'cpu')
     }
     
     transformer_config = {
@@ -344,10 +344,10 @@ if __name__ == "__main__":
         'num_epochs': 20,
         'grad_clip': 5.0,
         'early_stopping_patience': 5,
-        'device': 'cuda' if torch.cuda.is_available() else 'cpu'
+        'device': 'mps' if torch.backends.mps.is_available() else ('cuda' if torch.cuda.is_available() else 'cpu')
     }
     
-    data_dir = "../data/flickr8k"
+    data_dir = "/home/ubuntu/image-captioning-academic/data"
     
     # Train RNN model
     print("\n" + "=" * 60)
