@@ -1,0 +1,62 @@
+[
+  {
+    "image": "sample_1.jpg",
+    "caption": "a dog running on the grass"
+  },
+  {
+    "image": "sample_1.jpg",
+    "caption": "a brown dog playing outside"
+  },
+  {
+    "image": "sample_1.jpg",
+    "caption": "a pet dog in the park"
+  },
+  {
+    "image": "sample_1.jpg",
+    "caption": "a happy dog running in a field"
+  },
+  {
+    "image": "sample_1.jpg",
+    "caption": "a dog enjoying outdoor activities"
+  },
+  {
+    "image": "sample_2.jpg",
+    "caption": "a mountain landscape with snow"
+  },
+  {
+    "image": "sample_2.jpg",
+    "caption": "snow covered mountains under blue sky"
+  },
+  {
+    "image": "sample_2.jpg",
+    "caption": "a beautiful mountain range"
+  },
+  {
+    "image": "sample_2.jpg",
+    "caption": "mountains with white peaks"
+  },
+  {
+    "image": "sample_2.jpg",
+    "caption": "scenic mountain view"
+  },
+  {
+    "image": "sample_3.jpg",
+    "caption": "a beach with waves"
+  },
+  {
+    "image": "sample_3.jpg",
+    "caption": "ocean waves on the shore"
+  },
+  {
+    "image": "sample_3.jpg",
+    "caption": "a beautiful beach scene"
+  },
+  {
+    "image": "sample_3.jpg",
+    "caption": "waves crashing on the beach"
+  },
+  {
+    "image": "sample_3.jpg",
+    "caption": "a coastal landscape"
+  }
+]

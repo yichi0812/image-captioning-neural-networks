@@ -126,13 +126,22 @@ class CaptionDataset(Dataset):
         
         # Load captions
         with open(data_file, 'r') as f:
-            self.data = json.load(f)
+            data_dict = json.load(f)
+        
+        # Convert to list format: [{"image": ..., "caption": ...}, ...]
+        self.data = []
+        for image_name, captions in data_dict.items():
+            for caption in captions:
+                self.data.append({
+                    'image': image_name,
+                    'caption': caption
+                })
         
         print(f"Loaded {len(self.data)} caption-image pairs from {data_file}")
         
         # Build or use existing vocabulary
         if vocabulary is None:
-            self.vocab = Vocabulary(freq_threshold=1)  # Lower threshold for small dataset
+            self.vocab = Vocabulary(freq_threshold=5)  # Standard threshold for full dataset
             all_captions = [item['caption'] for item in self.data]
             self.vocab.build_vocabulary(all_captions)
         else:
