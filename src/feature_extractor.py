@@ -13,7 +13,7 @@ class CLIPFeatureExtractor(nn.Module):
     CLIP-based feature extractor for image captioning
     Uses pre-trained CLIP vision encoder
     """
-    def __init__(self, model_name="openai/clip-vit-base-patch32", freeze=True):
+    def __init__(self, model_name="openai/clip-vit-base-patch32", freeze=True, fine_tune_layers=2):
         super().__init__()
         self.model_name = model_name
         self.processor = CLIPProcessor.from_pretrained(model_name)
@@ -23,8 +23,28 @@ class CLIPFeatureExtractor(nn.Module):
         if freeze:
             for param in self.model.parameters():
                 param.requires_grad = False
+        else:
+            # Fine-tuning mode: unfreeze last N layers of vision encoder
+            # First freeze all parameters
+            for param in self.model.parameters():
+                param.requires_grad = False
+            
+            # Then unfreeze the last few layers of vision encoder
+            total_layers = len(self.model.vision_model.encoder.layers)
+            for i in range(total_layers - fine_tune_layers, total_layers):
+                for param in self.model.vision_model.encoder.layers[i].parameters():
+                    param.requires_grad = True
+            
+            # Also unfreeze the final layer norm and projection
+            for param in self.model.vision_model.post_layernorm.parameters():
+                param.requires_grad = True
+            
+            print(f"Fine-tuning enabled: Last {fine_tune_layers} layers of CLIP vision encoder")
         
-        self.model.eval()
+        if freeze:
+            self.model.eval()
+        else:
+            self.model.train()
         
         # Get feature dimension
         self.feature_dim = self.model.config.vision_config.hidden_size  # 768 for base
@@ -38,16 +58,15 @@ class CLIPFeatureExtractor(nn.Module):
             features: (batch_size, feature_dim)
             spatial_features: (batch_size, num_patches, feature_dim) for attention
         """
-        with torch.no_grad():
-            # Get vision features
-            vision_outputs = self.model.vision_model(pixel_values=pixel_values)
-            
-            # Pooled features (CLS token)
-            pooled_features = vision_outputs[1]  # pooler_output
-            
-            # Spatial features (all patch tokens)
-            spatial_features = vision_outputs[0]  # last_hidden_state
-            
+        # Get vision features (with or without gradients depending on freeze setting)
+        vision_outputs = self.model.vision_model(pixel_values=pixel_values)
+        
+        # Pooled features (CLS token)
+        pooled_features = vision_outputs[1]  # pooler_output
+        
+        # Spatial features (all patch tokens)
+        spatial_features = vision_outputs[0]  # last_hidden_state
+        
         return pooled_features, spatial_features
     
     def preprocess(self, image_path):

@@ -242,7 +242,7 @@ def train_rnn_model(data_dir, save_dir, config):
     # Create feature extractor
     feature_extractor = get_feature_extractor(
         model_type=config['feature_extractor'],
-        freeze=True
+        freeze=not config.get('fine_tune_cnn', False)  # Unfreeze if fine-tuning enabled
     )
     
     # Create model
@@ -286,7 +286,7 @@ def train_transformer_model(data_dir, save_dir, config):
     # Create feature extractor
     feature_extractor = get_feature_extractor(
         model_type=config['feature_extractor'],
-        freeze=True
+        freeze=not config.get('fine_tune_cnn', False)  # Unfreeze if fine-tuning enabled
     )
     
     # Create model
@@ -329,6 +329,7 @@ if __name__ == "__main__":
         'num_epochs': 20,
         'grad_clip': 5.0,
         'early_stopping_patience': 5,
+        'fine_tune_cnn': True,  # Enable CNN fine-tuning
         'device': 'mps' if torch.backends.mps.is_available() else ('cuda' if torch.cuda.is_available() else 'cpu')
     }
     
@@ -344,10 +345,12 @@ if __name__ == "__main__":
         'num_epochs': 20,
         'grad_clip': 5.0,
         'early_stopping_patience': 5,
+        'fine_tune_cnn': True,  # Enable CNN fine-tuning
         'device': 'mps' if torch.backends.mps.is_available() else ('cuda' if torch.cuda.is_available() else 'cpu')
     }
     
-    data_dir = "/home/ubuntu/image-captioning-academic/data"
+    # Use relative path to data directory
+    data_dir = "../data"
     
     # Train RNN model
     print("\n" + "=" * 60)

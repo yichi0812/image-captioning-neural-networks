@@ -84,18 +84,27 @@ def prepare_flickr8k(data_dir):
     print(f"  Val:   {len(val_images)} images")
     print(f"  Test:  {len(test_images)} images")
     
-    # Save splits
+    # Save splits in the format expected by dataset.py: list of {image, caption} dicts
     splits = {
-        'train': {img: captions_dict[img] for img in train_images},
-        'val': {img: captions_dict[img] for img in val_images},
-        'test': {img: captions_dict[img] for img in test_images}
+        'train': train_images,
+        'val': val_images,
+        'test': test_images
     }
     
-    for split_name, split_data in splits.items():
+    for split_name, image_list in splits.items():
+        # Convert to list format: [{"image": "img.jpg", "caption": "caption text"}, ...]
+        annotations = []
+        for img_name in image_list:
+            for caption in captions_dict[img_name]:
+                annotations.append({
+                    "image": img_name,
+                    "caption": caption
+                })
+        
         output_file = data_path / f"{split_name}_captions.json"
         with open(output_file, 'w', encoding='utf-8') as f:
-            json.dump(split_data, f, indent=2)
-        print(f"Saved {split_name} split to {output_file}")
+            json.dump(annotations, f, indent=2)
+        print(f"Saved {split_name} split to {output_file} ({len(annotations)} caption-image pairs)")
     
     print("\n✓ Dataset preparation complete!")
     return True
